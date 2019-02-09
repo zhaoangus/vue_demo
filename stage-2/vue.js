@@ -5,6 +5,7 @@
     Object.defineProperty(obj, key, {
       get: function () {
         if (Dep.target) {
+          // Dep.target即当前watcher对象
           Dep.target.addDep(dep)
         }
         return val
@@ -25,6 +26,7 @@
   
   var uid$1 = 0
   
+  // 订阅者
   function Dep () {
     // 用来存放Watcher对象的数组
     this.subs = []
@@ -45,9 +47,11 @@
     })
   }
   
+  // 观察者
   function Watcher (vm, exOrFn, cb) {
     this.vm = vm
     this.getter = exOrFn
+    // 数据改变后执行的操作（更新视图或其他操作）
     this.cb = cb
     this.depIds = []
     this.value = this.get()
@@ -181,6 +185,7 @@
     return vnode.elm
   }
   
+  // data中的数据代理，使得可以使用`this.key`而不是`this.$data.key`
   function proxy (vm, key) {
     Object.defineProperty(vm, key, {
       configurable: true,
